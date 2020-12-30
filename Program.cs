@@ -11,8 +11,7 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
     {
         static void Main(string[] args)
         {
-            ttdijktra tt = new dijktra();
-            tt.dijktra(1,6);
+           
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
 {
@@ -11,7 +6,8 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
     {
         static void Main(string[] args)
         {
-           
+           TimDuongDijktra tt = new TimDuongDijktra();
+            tt.TimDuong(1, 6);
         }
     }
 }

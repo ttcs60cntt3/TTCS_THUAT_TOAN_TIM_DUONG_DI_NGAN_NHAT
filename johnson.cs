@@ -16,7 +16,14 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
             Console.WriteLine(dls);
             rd.Close();
             int[,] duLieu = new int[50, 50];
-            this.duLieu = duLieu;{
+            this.duLieu = duLieu;
+            khoitao();
+        }
+        void khoitao()
+        {
+            listDuongDi = new List<DuongDi>();
+            daXet = new List<bool>();
+            for (int i = 0; i < duLieu.GetLength(0); i++) daXet.Add(false);
 
         }
 
@@ -39,27 +46,27 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
         public TimDuongDijktra()
         {
            // du lieu moi nhan tu WeightNew
-            khoitao();
+            khoitao2();
         }
         public TimDuongDijktra(int[,] duLieu)
         {
             if (duLieu != null)
             {
                 this.duLieu = duLieu;
-                khoitao();
+                khoitao2);
             }
         }
     
-        void khoitao()
+        void khoitao2()/// nhan do  thi sau khi thay doi trong so
         {
-            listDuongDi = new List<DuongDi>();
+            listDuongDi = new List<DuongDiMoi>();
             daXet = new List<bool>();
             for (int i = 0; i < duLieu.GetLength(0); i++) daXet.Add(false);
 
         }
         public List<int> TimDuong(int diemDauM, int diemCuoiM)
         {
-            khoitao();
+            khoitao2();
 
             diemDauM--;
             diemCuoiM--;

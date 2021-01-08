@@ -13,7 +13,7 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
              { 0, 0, 0, 0, 0, 1 },
              { 0, 2, 0, 0, 1, 0 },
              { 0, 0, 0, 0, 0, 2 },
-             { 0, 0, 0, 0, 0, 0 }
+             { 0, 0, 1, 2, 0, 0 }
             
             };
             Dijkstra(graph, 0,5);

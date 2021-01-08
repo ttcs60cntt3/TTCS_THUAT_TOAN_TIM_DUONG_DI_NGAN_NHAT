@@ -8,15 +8,15 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
         {
             int[,] graph =
             {
-             { 0, 1, 0, 1, 0, 0 },
-             { 1, 0, 1, 0, 0, 0 },
-             { 0, 1, 0, 1, 3, 0 },
-             { 1, 0, 1, 0, 0, 0 },
-             { 0, 0, 3, 0, 0, 1 },
-             { 0, 0, 0, 0, 1, 0 }
+             { 0, 1, 1, 0, 0, 0 },
+             { 0, 0, 0, 1, 0, 3 },
+             { 0, 0, 0, 0, 0, 1 },
+             { 0, 2, 0, 0, 1, 0 },
+             { 0, 0, 0, 0, 0, 2 },
+             { 0, 0, 0, 0, 0, 0 }
             
             };
-            Dijkstra(graph, 0,6);
+            Dijkstra(graph, 0,5);
             Console.ReadKey();
         }
         private static int KhoangCachMin(int[] khoangcach, bool[] duongdingannhat, int sodinh)

@@ -26,13 +26,7 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
             for (int i = 0; i < duLieu.GetLength(0); i++) daXet.Add(false);
 
         }
-        WriteLine.Console("Nhap diem bat dau:");// Nhap diem G vs trong so 0 vao dinh bat ban muon
-        readline.Console("%d",&r);
-        graph.edge[r].src = 0; 
-        graph.edge[r].dest = r; 
-        graph.edge[r].weight = 0; 
-  
-
+    
     }
     public class Bellman /// dung bell man de tinh trong so
     {
@@ -40,6 +34,7 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
     }
     public class WeightNew// luu lai do thi moi 
     {
+        int johnson()
         
     }
     public class TimDuongDijktra /// su dung code cua Long gia quyet Dijktra
@@ -242,6 +237,12 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
     {
         static void Main(string[] args)
         {
+              WriteLine.Console("Nhap diem bat dau:");// Nhap diem G vs trong so 0 vao dinh bat ban muon
+        readline.Console("%d",&r);
+        graph.edge[r].src = 0; 
+        graph.edge[r].dest = r; 
+        graph.edge[r].weight = 0; 
+  
             TimDuongDijktra tt = new TimDuongDijktra();
             tt.TimDuong(1, 6);
         }

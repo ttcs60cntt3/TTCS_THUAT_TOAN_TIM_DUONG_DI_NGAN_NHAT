@@ -35,7 +35,38 @@ namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
     public class WeightNew// luu lai do thi moi 
     {
         int johnson()
-        
+        {
+	int s = n;				
+	int u = 0, v = 0;
+	for(; u < n; u++){
+		add_arc(s,u,0);			
+	}
+	int *P = bellman_ford(G,s,n+1);		
+	for(u = 0; u < n; u++){
+		vlist *nbrs = G[u];		
+		while(nbrs != NULL){
+			v = nbrs->v;
+			nbrs->Delta = nbrs->w + P[u] - P[v];	
+			nbrs = nbrs->next;		
+		}
+	}
+	Console.WriteLine(" Trong so thay doi \n");
+//////////////// in list tai day
+	H = (int *)malloc((n-1)*(sizeof(int)));		
+	pos = (int *)malloc((n-1)*sizeof(int));
+	
+	int **D = (int **) malloc(n*sizeof(int*));		
+	d = (int *)malloc(n*sizeof(int));			
+	for( u = 0; u < n; u++){
+		D[u] = (int *)malloc(n*sizeof(int));		
+		dijkstra_heap(G, u, n);	 	
+		for(v = 0; v < n; v++){
+			D[u][v] = d[v] + P[v] - P[u];	
+		}
+	}
+	
+	return D;
+}
     }
     public class TimDuongDijktra /// su dung code cua Long gia quyet Dijktra
     {

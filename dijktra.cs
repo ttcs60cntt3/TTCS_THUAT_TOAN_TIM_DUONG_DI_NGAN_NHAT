@@ -1,53 +1,80 @@
 using System;
-
-namespace TTCS_THUAT_TOAN_TIM_DUONG_DI_NGAN_NHAT
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+namespace thuattoandijkstra
 {
-    class dijktra
+    class Edge
     {
-        private static int KhoangCachMin(int[] khoangcach, bool[] duongdingannhat, int sodinh)
+        public string u;
+        public string v;
+        public int w;
+        public Edge(string _u, string _v, string _w)
         {
-            int min = int.MaxValue;
-            int minIndex = 0;
-            for (int v = 0; v < sodinh; ++v)
+            u = _u;
+            v = _v;
+            w = int.Parse(_w);
+        }
+    }
+    class Graph
+    {
+        List<Edge> edges;
+        List<string> vertices;
+        public Graph(string path)
+        {
+            string[] data = System.IO.File.ReadAllLines(path);
+            edges = new List<Edge>();
+            vertices = new List<string>();
+            foreach (var line in data)
             {
-                if (duongdingannhat[v] == false && khoangcach[v] <= min)
+                string[] s = line.Split(' ');
+                edges.Add(new Edge(s[0], s[1], s[2]));
+                edges.Add(new Edge(s[1], s[0], s[2]));
+                if (!vertices.Contains(s[0]))
+                    vertices.Add(s[0]);
+                if (!vertices.Contains(s[1]))
+                    vertices.Add(s[1]);
+            }
+        }
+        public void Dijktra()
+        {
+            Console.Write("nhap dinh bat dau :");
+            string source = Console.ReadLine();
+            List<string> Q = new List<string>();
+            Dictionary<string, int> dist = new Dictionary<string, int>();
+            Dictionary<string, string> prev = new Dictionary<string, string>();
+            int INFINITY = edges.Max(p => p.w);
+            foreach (var v in vertices)
+            {
+                dist.Add(v, INFINITY);
+                prev.Add(v, null);
+                Q.Add(v);
+            }
+            dist[source] = 0;
+            while (Q.Count != 0)
+            {
+                var t = dist.Where(p => Q.Contains(p.Key));
+                int min = t.Min(p => p.Value);
+                string u = t.Where(p => p.Value == min).Select(p => p.Key).First();
+                Q.Remove(u);
+                List<Edge> dsCanhKeU = edges.Where(p => p.u == u && Q.Contains(p.v)).ToList();
+                foreach (Edge canhkeu in dsCanhKeU)
                 {
-                    min = khoangcach[v];
-                    minIndex = v;
+                    int alt = dist[u] + canhkeu.w;
+                    if (alt < dist[canhkeu.v])
+                    {
+                        dist[canhkeu.v] = alt;
+                        prev[canhkeu.v] = u;
+                    }
                 }
             }
-            return minIndex;
-        }
-        private static void Print(int[] khoangcach, int sodinh)
-        {
-            Console.WriteLine("khoang cach tu dinh nguon den cac dinh con lai:");
-
-            for (int i = 0; i < sodinh; ++i)
-                Console.WriteLine("{0}\t  {1}", i, khoangcach[i]);
-        }
-        public static void Dijkstra(int[,] graph, int dinhnguon, int sodinh)
-        {
-            int[] khoangcach = new int[sodinh];
-            bool[] duongdingannhat = new bool[sodinh];
-
-            for (int i = 0; i < sodinh; ++i)
+            Console.WriteLine("ket qua tim duong di ngan nhat tu dinh " + source + " : ");
+            foreach (var item in dist)
             {
-                khoangcach[i] = int.MaxValue;
-                duongdingannhat[i] = false;
+                Console.WriteLine(item.Key + "\t" + item.Value);
             }
-            khoangcach[dinhnguon] = 0;
-
-            for (int count = 0; count < sodinh - 1; ++count)
-            {
-                int u = KhoangCachMin(khoangcach, duongdingannhat, sodinh);
-                duongdingannhat[u] = true;
-
-                for (int v = 0; v < sodinh; ++v)
-                    if (!duongdingannhat[v] && Convert.ToBoolean(graph[u, v])
-                && khoangcach[u] != int.MaxValue && khoangcach[u] + graph[u, v] < khoangcach[v])
-                        khoangcach[v] = khoangcach[u] + graph[u, v];
-            }
-            Print(khoangcach, sodinh);
         }
     }
 }

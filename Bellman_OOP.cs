@@ -131,7 +131,7 @@ namespace BellmanFord
     {
         static void Main(string[] args)
         {
-           Console.WriteLine("Tim duong di ngan nhat Bellman Ford");
+            Console.WriteLine("Tim duong di ngan nhat Bellman Ford");
             Bellman dt = new Bellman("a.txt");
             dt.Print();
             dt.BellmanFord();

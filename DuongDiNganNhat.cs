@@ -6,57 +6,51 @@ using System.Threading.Tasks;
 using System.IO;
 namespace BellmanFord
 {
-     static void Main(string[] args)
+    class  Program
+    {
+        static void Main(string[] args)
         {
-            Console.WriteLine("==========================Thuat toan tim duong di ngan nhat==========================");
-            Console.WriteLine("1. Thuat toan Dijkstra");
-            Console.WriteLine("2. Thuat toan Bellman Ford");
-            Console.WriteLine("Vui long lua chon giai thuat: ");
-            int choice;
+            string k;
             do
             {
-                choice = int.Parse(Console.ReadLine());
-            } while (choice < 1 && choice > 2);
-            switch(choice)
-            {
-                case 1:
-                    {
-                        Console.WriteLine("=========Giai thuat Dijkstra=========");
-                        string s;
-                        Console.Write("Nhap dia chi file: ");
-                        s = Console.ReadLine();
-                        try
+                Console.WriteLine("==========================Thuat toan tim duong di ngan nhat==========================");
+                Console.WriteLine("1. Thuat toan Dijkstra");
+                Console.WriteLine("2. Thuat toan Bellman Ford");
+
+                int choice;
+                do
+                {
+                    Console.WriteLine("Vui long lua chon giai thuat: ");
+                    choice = int.Parse(Console.ReadLine());
+                } while (choice < 1 && choice > 2);
+                switch (choice)
+                {
+                    case 1:
                         {
-                            Dijkstra dt = new Dijkstra(s);
-                            dt.Print();
-                            dt.DIJKSTRA();
+                            Console.WriteLine("=========Giai thuat Dijkstra=========");
+                            
+                                string l = "a";
+                                Dijkstra dt = new Dijkstra(l);
+                                dt.Print();
+                                dt.Dijkstras();
+                            break;
                         }
-                        catch
+                    case 2:
                         {
-                            Console.WriteLine("Khong mo duoc file! ");
+                            Console.WriteLine("=========Giai thuat Bellman Ford=========");                           
+                            
+                                string l = "a";
+                                Bellman dt = new Bellman(l);
+                                dt.Print();
+                                dt.BellmanFord();
+                          
+                            break;
                         }
-                        break;
-                    }
-                case 2:
-                    {
-                        Console.WriteLine("=========Giai thuat Bellman Ford=========");
-                        string s;
-                        Console.Write("Nhap dia chi file: ");
-                        s = Console.ReadLine();
-                        try
-                        {
-                            Bellman dt = new Bellman(s);
-                            dt.Print();
-                            dt.BellmanFord();
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Khong mo duoc file! ");
-                        }
-                        break;
-                    }
-            }
-            Console.ReadKey();
+                }
+                Console.ReadKey();
+                Console.WriteLine("Nhap phim bat ki de quay lai menu chinh || Nhap 0 de ket thuc chuong trinh");
+                k = Console.ReadLine();
+            }while(k!="0");
         }
     }
     class Canh
@@ -84,26 +78,88 @@ namespace BellmanFord
 
         public Graph(string p="")
         {
-            path = p;
-            string[] data = System.IO.File.ReadAllLines(path);
             dsCanh = new List<Canh>();
             dsDinh = new List<string>();
-            for (int i = 0; i < data.Length; i++)
+            Console.WriteLine("Vui long chon kieu nhap du lieu:");
+            Console.WriteLine("1. Nhap tu ban phim");
+            Console.WriteLine("2. Doc du lieu tu file");
+            int choice;
+            do
             {
-                string[] s = data[i].Split(' ');
-                dsCanh.Add(new Canh(s[0], s[1], s[2]));
-                if (!dsDinh.Contains(s[0])) // .Contains : nội dung đã chứa
-                    dsDinh.Add(s[0]);
-                if (!dsDinh.Contains(s[1]))
-                    dsDinh.Add(s[1]);
-            }
-            Console.WriteLine("Danh sach cac dinh: ");
-            for (int i = 0; i < dsDinh.Count; i++) // dsDinh.Count : Tong dinh
+                Console.WriteLine("Nhap lua chon cua ban");
+                choice = int.Parse(Console.ReadLine());
+            } while (choice != 1 && choice != 2);
+            switch(choice)
             {
-                Console.Write(dsDinh[i] + " ");
+                case 1:
+                    {
+                        int n;
+                        do
+                        {
+                            Console.WriteLine("Nhap so luong canh: ");
+                            n = int.Parse(Console.ReadLine());
+                            if(n<=0)
+                            {
+                                Console.WriteLine("So luong canh phai lon hon 0\a\a\a");
+                            }
+                        } while (n <= 0);
+
+                        for(int i = 0; i < n; i++)
+                        {
+                            Console.WriteLine("Nhap canh thu {0} ", i + 1);
+                            Console.Write("Nhap dinh s[{0}] : ", 0);
+                            string s0 = Console.ReadLine();
+                            Console.Write("Nhap dinh s[{0}] : ", 1);
+                            string s1 = Console.ReadLine();
+                            Console.Write("Nhap trong so s[{0}] : ", 2);
+                            string s2 = Console.ReadLine();
+                            dsCanh.Add(new Canh(s0, s1, s2));
+                            if (!dsDinh.Contains(s0)) // .Contains : nội dung đã chứa
+                                dsDinh.Add(s0);
+                            if (!dsDinh.Contains(s1))
+                                dsDinh.Add(s1);
+                        }
+                        Console.WriteLine("Danh sach cac dinh: ");
+                        for (int i = 0; i < dsDinh.Count; i++) // dsDinh.Count : Tong dinh
+                        {
+                            Console.Write(dsDinh[i] + " ");
+                        }
+                        Console.Write("Chon dinh bat dau : ");
+                        nguon = Console.ReadLine();
+                        break;
+                    }
+                case 2:
+                    {
+                        try
+                        {
+                            Console.Write("Nhap dia chi file: ");
+                            p = Console.ReadLine();
+                            path = p;
+                            string[] data = System.IO.File.ReadAllLines(path);
+                            for (int i = 0; i < data.Length; i++)
+                            {
+                                string[] s = data[i].Split(' ');
+                                dsCanh.Add(new Canh(s[0], s[1], s[2]));
+                                if (!dsDinh.Contains(s[0])) // .Contains : nội dung đã chứa
+                                    dsDinh.Add(s[0]);
+                                if (!dsDinh.Contains(s[1]))
+                                    dsDinh.Add(s[1]);
+                            }
+                            Console.WriteLine("Danh sach cac dinh: ");
+                            for (int i = 0; i < dsDinh.Count; i++) // dsDinh.Count : Tong dinh
+                            {
+                                Console.Write(dsDinh[i] + " ");
+                            }
+                            Console.Write("Chon dinh bat dau : ");
+                            nguon = Console.ReadLine();
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Khong mo duoc file!\a\a");
+                        }
+                            break;
+                    }                   
             }
-            Console.Write("Chon dinh bat dau : ");
-            nguon = Console.ReadLine();
         }
         public String Print()
         {
@@ -115,7 +171,7 @@ namespace BellmanFord
         public Dijkstra(string p = " ") : base(p)
         {
         }
-        public void DIJKSTRA()
+        public void Dijkstras()
         {
             List<string> q = new List<string>();
             Dictionary<string, int> distance = new Dictionary<string, int>();

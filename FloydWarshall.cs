@@ -3,65 +3,47 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
- 
-namespace FloydWarshallAlgorithm
+using System.Threading.Tasks;
+using System.IO;
+
+namespace BellmanFord
 {
-    class FloydWarshallAlgo
+    class Floyd:Graph
     {
- 
-        public const int cst = 9999;
- 
-        private static void Print(int[,] distance, int verticesCount)
+        public Floyd(string p = " ") : base(p)
         {
-            Console.WriteLine("Khoảng cách ngắn nhất giữa mọi cặp đỉnh:");
- 
-            for (int i = 0; i < verticesCount; ++i)
-            {
-                for (int j = 0; j < verticesCount; ++j)
-                {
-                    if (distance[i, j] == cst)
-                        Console.Write("cst".PadLeft(7));
-                    else
-                        Console.Write(distance[i, j].ToString().PadLeft(7));
-                }
- 
-                Console.WriteLine();
-            }
         }
- 
-        public static void FloydWarshall(int[,] graph, int verticesCount)
+        public void floyd()
         {
-            int[,] distance = new int[verticesCount, verticesCount];
- 
-            for (int i = 0; i < verticesCount; ++i)
-                for (int j = 0; j < verticesCount; ++j)
-                    distance[i, j] = graph[i, j];
- 
-            for (int k = 0; k < verticesCount; ++k)
+            Dictionary<string, int> distance = new Dictionary<string, int>();
+            Dictionary<string, string> predecessor = new Dictionary<string, string>();
+            int inf = DsCanh.Max(p => p.cost) + 100;
+            foreach (string v in DsDinh)
             {
-                for (int i = 0; i < verticesCount; ++i)
+
+                distance.Add(v, inf);
+                predecessor.Add(v, null);
+             
+            }
+            distance[Nguon] = 0;
+            for (int i = 0; i < DsDinh.Count - 1; i++)
+            {
+                foreach (Canh c in DsCanh)
                 {
-                    for (int j = 0; j < verticesCount; ++j)
+                    if (distance[c.u] + c.cost <distance[c.v])
                     {
-                        if (distance[i, k] + distance[k, j] < distance[i, j])
-                            distance[i, j] = distance[i, k] + distance[k, j];
+                        distance[c.v] = distance[c.u] + c.cost;                      
                     }
                 }
             }
- 
-            Print(distance, verticesCount);
+            Console.WriteLine("--Khoang cach tu nguon den cac dinh: ");
+            foreach (var item in distance)
+            {
+                Console.WriteLine(item.Key + " " + item.Value);
+            }
+
         }
-        static void Main(string[] args)
-        {
-            int[,] graph = {
-                         { 0,   6,  cst, 11 },
-                         { cst, 0,   4, cst },
-                         { cst, cst, 0,   2 },
-                         { cst, cst, cst, 0 }
-                           };
- 
-            FloydWarshall(graph, 4);
-        }
+
     }
 }
+

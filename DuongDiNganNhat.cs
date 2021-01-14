@@ -10,12 +10,16 @@ namespace BellmanFord
     {
         static void Main(string[] args)
         {
+            /*Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new FormDuongDiNganNhat());*/
             string k;
             do
             {
                 Console.WriteLine("==========================Thuat toan tim duong di ngan nhat==========================");
                 Console.WriteLine("1. Thuat toan Dijkstra");
                 Console.WriteLine("2. Thuat toan Bellman Ford");
+                Console.WriteLine("3. Thuat toan Floy Warshall");
 
                 int choice;
                 do
@@ -27,30 +31,55 @@ namespace BellmanFord
                 {
                     case 1:
                         {
+                            Stopwatch stopWatch = new Stopwatch();
+                            stopWatch.Start();
                             Console.WriteLine("=========Giai thuat Dijkstra=========");
-                            
-                                string l = "a";
-                                Dijkstra dt = new Dijkstra(l);
-                                dt.Print();
-                                dt.Dijkstras();
+                            Dijkstra dt = new Dijkstra();
+                            dt.Print();                           
+                            dt.Dijkstras();
+                            // Format and display the TimeSpan value.
+                            stopWatch.Stop();
+                            TimeSpan ts = stopWatch.Elapsed;
+                            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                                ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                            Console.WriteLine("RunTime " + elapsedTime);
                             break;
                         }
                     case 2:
                         {
-                            Console.WriteLine("=========Giai thuat Bellman Ford=========");                           
-                            
-                                string l = "a";
-                                Bellman dt = new Bellman(l);
-                                dt.Print();
-                                dt.BellmanFord();
-                          
+                            Stopwatch stopWatch = new Stopwatch();
+                            stopWatch.Start();
+                            Console.WriteLine("=========Giai thuat Bellman Ford=========");                                             
+                            Bellman dt = new Bellman();
+                            dt.Print();
+                            dt.BellmanFord();
+                            stopWatch.Stop();
+                            TimeSpan ts = stopWatch.Elapsed;
+                            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                            ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                            Console.WriteLine("RunTime " + elapsedTime);
+                            break;
+                        }
+                    case 3:
+                        {
+                            Stopwatch stopWatch = new Stopwatch();
+                            stopWatch.Start();
+                            Console.WriteLine("=========Giai thuat Bellman Ford=========");
+                            Floyd dt = new Floyd();
+                            dt.Print();
+                            dt.floyd();
+                            stopWatch.Stop();
+                            TimeSpan ts = stopWatch.Elapsed;
+                            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                            ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+                            Console.WriteLine("RunTime " + elapsedTime);
                             break;
                         }
                 }
-                Console.ReadKey();
                 Console.WriteLine("Nhap phim bat ki de quay lai menu chinh || Nhap 0 de ket thuc chuong trinh");
                 k = Console.ReadLine();
             }while(k!="0");
+            Console.ReadKey();            
         }
     }
     class Canh
@@ -76,7 +105,7 @@ namespace BellmanFord
         public List<Canh> DsCanh { get => dsCanh; set => dsCanh = value; }
         public string Nguon { get => nguon; set => nguon = value; }
 
-        public Graph(string p="")
+        public Graph()
         {
             dsCanh = new List<Canh>();
             dsDinh = new List<string>();
@@ -133,7 +162,7 @@ namespace BellmanFord
                         try
                         {
                             Console.Write("Nhap dia chi file: ");
-                            p = Console.ReadLine();
+                            string p = Console.ReadLine();
                             path = p;
                             string[] data = System.IO.File.ReadAllLines(path);
                             for (int i = 0; i < data.Length; i++)
@@ -168,7 +197,7 @@ namespace BellmanFord
     }
     class Dijkstra : Graph
     {
-        public Dijkstra(string p = " ") : base(p)
+        public Dijkstra() : base()
         {
         }
         public void Dijkstras()
@@ -210,7 +239,7 @@ namespace BellmanFord
     }
     class Bellman : Graph
     {
-        public Bellman(string p = " ") : base(p)
+        public Bellman() : base()
         {
         }
         public void BellmanFord()
@@ -281,5 +310,42 @@ namespace BellmanFord
                 Console.WriteLine(item.Key + "\t" + item.Value);       
             }
         }
+    }
+    class Floyd : Graph
+    {
+        public Floyd() : base()
+        {
+        }
+        public void floyd()
+        {
+            Dictionary<string, int> distance = new Dictionary<string, int>();
+            Dictionary<string, string> predecessor = new Dictionary<string, string>();
+            int inf = DsCanh.Max(p => p.cost) + 100;
+            foreach (string v in DsDinh)
+            {
+
+                distance.Add(v, inf);
+                predecessor.Add(v, null);
+
+            }
+            distance[Nguon] = 0;
+            for (int i = 0; i < DsDinh.Count - 1; i++)
+            {
+                foreach (Canh c in DsCanh)
+                {
+                    if (distance[c.u] + c.cost < distance[c.v])
+                    {
+                        distance[c.v] = distance[c.u] + c.cost;
+                    }
+                }
+            }
+            Console.WriteLine("--Khoang cach tu nguon den cac dinh: ");
+            foreach (var item in distance)
+            {
+                Console.WriteLine(item.Key + " " + item.Value);
+            }
+
+        }
+
     }
 }

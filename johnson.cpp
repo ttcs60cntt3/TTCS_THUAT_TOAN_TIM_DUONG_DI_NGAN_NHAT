@@ -1,4 +1,5 @@
 
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -8,7 +9,7 @@
 
 int *H; 	
 int hsize = 0; 	
-int *pos;	
+int *pos;	 // mang danh dau vi tri cua moi dinh trog mang Heap
 void up_heapify(int u);
 int parent(int u);
 void print_heap();
@@ -29,21 +30,21 @@ int n;
 int **D;				
 int *d;					
 void read(); 				
-void add_arc(int u, int v, int w);
+void them_cung(int u, int v, int w);
 int *bellman_ford(vlist **G, int s, int n);
 void dijkstra_heap(vlist** G, int s, int n);
 int  **johnson();
 
-void print_array(int *A, int n);
-void print_list_graph();
-void print_vertex_list(int u);
+void inmang(int *A, int n);
+void indothi();
+void indscanh(int u);
 
 
 int **johnson(){
 	int s = n;				
 	int u = 0, v = 0;
 	for(; u < n; u++){
-		add_arc(s,u,0);			
+		them_cung(s,u,0);			
 	}
 	int *P = bellman_ford(G,s,n+1);		
 	for(u = 0; u < n; u++){
@@ -54,8 +55,8 @@ int **johnson(){
 			nbrs = nbrs->next;		
 		}
 	}
-	printf("Do thi sau khi doi trong so\n");
-	print_list_graph();
+	printf("\nDo thi sau khi doi trong so\n");
+	indothi();
 	H = (int *)malloc((n-1)*(sizeof(int)));		
 	pos = (int *)malloc((n-1)*sizeof(int));
 	
@@ -133,20 +134,20 @@ void read(){
 	int i = 0, j = 0;
 	G = (vlist **) malloc((n+1)*sizeof(vlist*));	
 	for(; i < n+1; i++)G[i] = NULL;
-	add_arc(0,2,-1);	
-	add_arc(1,0,5);		
-	add_arc(2,0,3);		
-	add_arc(2,1,-3);	
-	add_arc(2,4,11);	
-	add_arc(3,0,-6);	
-	add_arc(4,3,-3);	
-	add_arc(4,5,4);		
-	add_arc(5,1,-4);	
-	add_arc(5,2,1);		
+	them_cung(0,2,-1);	
+	them_cung(1,0,5);		
+	them_cung(2,0,3);		
+	them_cung(2,1,-3);	
+	them_cung(2,4,11);	
+	them_cung(3,0,-6);	
+	them_cung(4,3,-3);	
+	them_cung(4,5,4);		
+	them_cung(5,1,-4);	
+	them_cung(5,2,1);		
 
 }
 // them G
-void add_arc(int u, int v, int w){
+void them_cung(int u, int v, int w){
 	vlist* vnode = (vlist *)malloc(sizeof(vlist));
 	vnode->v = v;
 	vnode->w = w;
@@ -156,7 +157,8 @@ void add_arc(int u, int v, int w){
 }
 
 
-void up_heapify(int u){
+void up_heapify(int u)// u không phai là goc cua heap
+{
 	int v = parent(u);
 	if(v != -1 && d[H[u]] < d[H[v]]){
 		int tmp = H[u];
@@ -169,14 +171,14 @@ void up_heapify(int u){
 }
 
 
-
+//Hai nut con cua nut u la 2u + 1 và 2u + 2, nut nho hon là nut con ben trai
 int parent(int u){
 	return ((u&1)==0 ? ((u-2)>> 1) : (u-1) >> 1);
 }
 
 
 
-void print_heap(){
+void in_dong(){
 	int i = 0;
 	for(; i < hsize; i++){
 		printf("%d ", H[i]);
@@ -199,7 +201,8 @@ int extract_min(){
 	return tmp;
 }
 
-void down_heapify(int u){
+void down_heapify(int u)// u không phai là lá cua dong
+{
 	int m = 2*u+1;
 	if(m < hsize){	
 		if(2*u+2 < hsize && d[H[m]] > d[H[2*u+2]]){
@@ -216,7 +219,7 @@ void down_heapify(int u){
 	}
 }
 
-
+// Xây dung dong tu mot mang trong thoi gian O (n)
 void build_heap(int n, int s){
 	hsize = n-1;
 	memset(H,-1,hsize*sizeof(int));		
@@ -237,13 +240,13 @@ void build_heap(int n, int s){
 }
 
 
-void print_list_graph(){
+void indothi(){
 	int u = 0;
 	for(; u < n; u++){
-		print_vertex_list(u);
+	indscanh(u);
 	}	
 }
-void print_vertex_list(int u)
+void indscanh(int u)
 {
 	vlist *it = G[u];
 	while(it != NULL){
@@ -252,7 +255,7 @@ void print_vertex_list(int u)
 	}
 	printf("\n");
 }
-void print_array(int *A, int n){
+void inmang(int *A, int n){
 	int i = 0;
 	for(; i < n; i++){
 		printf("%d ", A[i]);
@@ -262,9 +265,9 @@ void print_array(int *A, int n){
 }
 int main(){
 	read();
-	print_list_graph();
+	indothi();
 	D = johnson();
-	printf("Tat ca khoang cach cua Johnson\n");
+	printf("\nTat ca khoang cach cua Johnson\n");
 	int i = 0;
-	for(; i < n; i++) print_array(D[i], n);
+	for(; i < n; i++) inmang(D[i], n);
 }
